@@ -4,9 +4,6 @@ A logging plugin for [CakePHP](http://cakephp.org). The included `AuditableBehav
 
 The behavior tracks changes on two levels. It takes a snapshot of the fully hydrated object _after_ a change is complete and it also records each individual change in the case of an update action.
 
-Based on the Original AuditLog plugin for CakePHP 2.x found [here](https://github.com/robwilkerson/CakePHP-Audit-Log-Plugin) and off the awesome work of [rochamarcelo](https://github.com/rochamarcelo)
-
-
 ## Features
 
 * Support for CakePHP 3.0. Thanks to @rochamarcelo
@@ -55,6 +52,7 @@ Applying the `AuditableBehavior` to a model is essentially the same as applying 
 
 ### Basic Usage
 
+```php
     # Simple syntax accepting default options
     class TasksTable extends Table {
     
@@ -64,6 +62,7 @@ Applying the `AuditableBehavior` to a model is essentially the same as applying 
       }
       
     }
+```
 
 ### Configuration
     
@@ -78,6 +77,7 @@ The behavior does offer a few configuration options:
 	<dd>An array of models that have a HABTM relationship with the acting model and whose changes should be monitored with the model. If the HABTM model is auditable in its own right, don't include it here. This option is for related models whose changes are _only_ tracked relative to the acting model.</dd>
 </dl>
 
+```php
     # Syntax with explicit options
     class TasksTable extends Table {
     
@@ -91,6 +91,7 @@ The behavior does offer a few configuration options:
       }
       
     }
+```
 
 ### Setting Audit Sources
 
