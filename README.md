@@ -17,7 +17,7 @@ The behavior tracks changes on two levels. It takes a snapshot of the fully hydr
 ### Composer
 
 ```
-  $ composer install zikani03/cakephp-audit-log
+  $ composer install jippi/cakephp-audit-log
 ```
 
 ### Manually
@@ -36,7 +36,7 @@ To create the tables you can use the CakePHP 3.0 Migrations shell. Here is how:
 
 1. Copy the migrations from `/path/to/plugin/config/Migrations` to your `src/config/Migrations/` directory
    
-> If you installed via composer you need to look at `vendor/zikani03/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
+> If you installed via composer you need to look at `vendor/jippi/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
    
 2. run the migrations with the following command
 
