@@ -2,6 +2,7 @@
 namespace AuditLog\Model\Table;
 
 use AuditLog\Model\Entity\Audit;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -32,7 +33,10 @@ class AuditsTable extends Table
             'foreignKey' => 'audit_id',
             'className' => 'AuditLog.AuditDeltas'
         ]);
-        $this->setupSearchPlugin();
+        // Disable the search plugin by default
+        if (Configure::read('AuditLog.enableSearch')) {
+            $this->setupSearchPlugin();
+        }
     }
 
 

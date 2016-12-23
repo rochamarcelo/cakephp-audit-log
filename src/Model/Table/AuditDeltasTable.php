@@ -32,7 +32,10 @@ class AuditDeltasTable extends Table
         $this->addBehavior('CounterCache', [
              'Audits' => ['delta_count']
         ]);
-        $this->setupSearchPlugin();
+        // Disable the search plugin by default
+        if (Configure::read('AuditLog.enableSearch')) {
+            $this->setupSearchPlugin();
+        }
     }
 
     public function setupSearchPlugin()
