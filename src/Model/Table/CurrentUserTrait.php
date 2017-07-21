@@ -11,12 +11,13 @@ trait CurrentUserTrait
         $session = $request->session();
         $username = $session->read('Auth.User.username');
 
-        if ($session->check('Auditable.auditDescription')) {
-            $description = $session->consume('Auditable.auditDescription');
-        } else {
-            $description = h(sprintf('Action by %s', $username));
-        }
+        $description = h(sprintf('Action by %s', $username));
 
+        if ($message = $session->read('Auditable__auditDescription')) {
+            $description = h($message);
+            $session->consume('Auditable__auditDescription');
+        }
+        
         return [
             'id' => $username,
             'ip' => $request->env('REMOTE_ADDR'),

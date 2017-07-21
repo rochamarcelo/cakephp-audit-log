@@ -54,9 +54,7 @@ class CurrentUserTraitTest extends TestCase
     {
         $expected = 'This item is no longer relevant';
 
-        $_SESSION['Auditable'] = [
-            'auditDescription' => 'This item is no longer relevant'
-        ];
+        $_SESSION['Auditable__auditDescription'] = 'This item is no longer relevant';
 
         $fakeModel = new ImplementsCurrentUser();
         $data = $fakeModel->currentUser();
