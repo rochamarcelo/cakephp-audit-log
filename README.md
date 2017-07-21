@@ -36,7 +36,7 @@ To create the tables you can use the CakePHP 3.0 Migrations shell. Here is how:
 
 1. Copy the migrations from `/path/to/plugin/config/Migrations` to your `src/config/Migrations/` directory
    
-> If you installed via composer you need to look at `vendor/jippi/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
+> If you installed via composer you need to look at `vendor/creditdatamw/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
    
 2. run the migrations with the following command
 
@@ -63,6 +63,34 @@ Applying the `AuditableBehavior` to a model is essentially the same as applying 
       
     }
 ```
+
+### Describing events
+
+> NOTE: Since version `1.1.0` 
+
+You may want to add a custom description message for an Audit Event from your application.
+You can do this by setting the `Auditable.auditDescription` attribute in the current request's 
+Session. The plugin reads the value from that and sets it in the `description` field for the 
+Audit record. The value is cleared upon use.
+
+Example:
+
+```php
+  public function delete($id=null) {
+    $session = $this->request()->session();
+
+    $post = $this->Posts->get($id);
+    
+    $title = $post->get('title');
+    
+    $session->write('Auditable.auditDescription', __('User deleted a Post with title={0}', $title));
+    
+    $this->Posts->delete($post);
+    
+    return $this->redirect('/');
+  }
+```
+ 
 
 ### Configuration
     
