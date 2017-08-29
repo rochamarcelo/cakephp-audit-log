@@ -258,7 +258,7 @@ class AuditableBehavior extends Behavior
             'source_id' => $source['id'],
             'source_ip' => $source['ip'],
             'source_url' => $source['url'],
-            'description' => $source['description']
+            'description' => $this->_table->getDeleteEventDescription()
         ];
 
         if ($config['json_object']) {
