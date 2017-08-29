@@ -20,7 +20,7 @@ trait CurrentUserTrait
     }
 
     public function getDeleteEventDescription() {
-        $description = Request::createFromGlobals()->consume('Auditable.auditDescription');
+        $description = Request::createFromGlobals()->session()->consume('Auditable.auditDescription');
         if (!$description) {
             return h(sprintf('Action by %s', $username));
         }
