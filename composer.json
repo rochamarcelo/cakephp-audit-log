@@ -27,7 +27,7 @@
   ],
   "support":{
     "source":"https://github.com/creditdatamw/cakephp-audit-log",
-    "issues":"https://github.com/creditdatamw/cakephp-audit-log/issues",
+    "issues":"https://github.com/creditdatamw/cakephp-audit-log/issues"
   },
   "require":{
     "composer/installers":"*",

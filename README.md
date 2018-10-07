@@ -1,12 +1,11 @@
 # Audit Log Plugin
 
-A logging plugin for [CakePHP](http://cakephp.org). The included `AuditableBehavior`  creates an audit history for each instance of a model to which it's attached.
+A logging plugin for [CakePHP 3](http://cakephp.org). The included `AuditableBehavior`  creates an audit history for each instance of a model to which it's attached.
 
 The behavior tracks changes on two levels. It takes a snapshot of the fully hydrated object _after_ a change is complete and it also records each individual change in the case of an update action.
 
 ## Features
 
-* Support for CakePHP 3.0. Thanks to @rochamarcelo
 * Allows each revision record to be attached to a source -- usually a user -- of responsibility for the change.
 * Allows developers to ignore changes to specified properties. Properties named `created`, `updated` and `modified` are ignored by default, but these values can be overwritten.
 * Handles changes to HABTM associations.
@@ -17,7 +16,7 @@ The behavior tracks changes on two levels. It takes a snapshot of the fully hydr
 ### Composer
 
 ```
-  $ composer install jippi/cakephp-audit-log
+  $ composer install creditdatamw/cakephp-audit-log
 ```
 
 ### Manually
@@ -77,7 +76,7 @@ Example:
 
 ```php
   public function delete($id=null) {
-    $session = $this->request()->session();
+    $session = $this->request()->getSession();
 
     $post = $this->Posts->get($id);
     
@@ -156,14 +155,10 @@ Your table's will then have a ```currentUser()``` function attached that returns
     ]
 ```
 
-## Limitations
+## CONTRIBUTING
 
-* This project is for CakePHP 3.0 and is not backwards compatible with CakePHP <= 2.x. If you need compatibility with these version please use the original [CakePHP 2.x AuditLog plugin](https://github.com/robwilkerson/CakePHP-Audit-Log-Plugin)
+Feel free to submit bug reports or suggest improvements in a ticket or fork this project and improve upon it yourself. Contributions welcome.
 
 ## License
 
 This code is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
-
-## Notes
-
-Feel free to submit bug reports or suggest improvements in a ticket or fork this project and improve upon it yourself. Contributions welcome.
