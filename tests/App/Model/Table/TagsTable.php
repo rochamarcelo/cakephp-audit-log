@@ -20,9 +20,9 @@ class TagsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('tags');
-        $this->displayField('title');
-        $this->primaryKey('id');
+        $this->setTable('tags');
+        $this->setDisplayField('title');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->belongsToMany('Articles', [
             'foreignKey' => 'tag_id',

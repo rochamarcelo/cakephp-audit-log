@@ -24,9 +24,9 @@ class AuditsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('audits');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('audits');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
 
         $this->hasMany('AuditDeltas', [

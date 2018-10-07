@@ -22,9 +22,9 @@ class AuditDeltasTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('audit_deltas');
-        $this->displayField('property_name');
-        $this->primaryKey('id');
+        $this->setTable('audit_deltas');
+        $this->setDisplayField('property_name');
+        $this->setPrimaryKey('id');
         $this->belongsTo('Audits', [
             'foreignKey' => 'audit_id',
             'joinType' => 'INNER',
