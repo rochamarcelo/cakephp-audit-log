@@ -1,15 +1,11 @@
 # Audit Log Plugin
 
-A logging plugin for [CakePHP](http://cakephp.org). The included `AuditableBehavior`  creates an audit history for each instance of a model to which it's attached.
+A logging plugin for [CakePHP 3](http://cakephp.org). The included `AuditableBehavior`  creates an audit history for each instance of a model to which it's attached.
 
 The behavior tracks changes on two levels. It takes a snapshot of the fully hydrated object _after_ a change is complete and it also records each individual change in the case of an update action.
 
-Based on the Original AuditLog plugin for CakePHP 2.x found [here](https://github.com/robwilkerson/CakePHP-Audit-Log-Plugin) and off the awesome work of [rochamarcelo](https://github.com/rochamarcelo)
-
-
 ## Features
 
-* Support for CakePHP 3.0. Thanks to @rochamarcelo
 * Allows each revision record to be attached to a source -- usually a user -- of responsibility for the change.
 * Allows developers to ignore changes to specified properties. Properties named `created`, `updated` and `modified` are ignored by default, but these values can be overwritten.
 * Handles changes to HABTM associations.
@@ -20,7 +16,7 @@ Based on the Original AuditLog plugin for CakePHP 2.x found [here](https://githu
 ### Composer
 
 ```
-  $ composer install zikani03/cakephp-audit-log
+  $ composer install creditdatamw/cakephp-audit-log
 ```
 
 ### Manually
@@ -39,7 +35,7 @@ To create the tables you can use the CakePHP 3.0 Migrations shell. Here is how:
 
 1. Copy the migrations from `/path/to/plugin/config/Migrations` to your `src/config/Migrations/` directory
    
-> If you installed via composer you need to look at `vendor/zikani03/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
+> If you installed via composer you need to look at `vendor/creditdatamw/cakephp-audit-log/config/Migrations`, if you installed the plugin manually you should look under `plugins/AuditLog/config/Migrations`
    
 2. run the migrations with the following command
 
@@ -55,6 +51,7 @@ Applying the `AuditableBehavior` to a model is essentially the same as applying 
 
 ### Basic Usage
 
+```php
     # Simple syntax accepting default options
     class TasksTable extends Table {
     
@@ -64,6 +61,35 @@ Applying the `AuditableBehavior` to a model is essentially the same as applying 
       }
       
     }
+```
+
+### Describing events
+
+> NOTE: Since version `1.1.0` 
+
+You may want to add a custom description message for an Audit Event from your application.
+You can do this by setting the `Auditable.auditDescription` attribute in the current request's 
+Session. The plugin reads the value from that and sets it in the `description` field for the 
+Audit record. The value is cleared upon use.
+
+Example:
+
+```php
+  public function delete($id=null) {
+    $session = $this->request()->getSession();
+
+    $post = $this->Posts->get($id);
+    
+    $title = $post->get('title');
+    
+    $session->write('Auditable.auditDescription', __('User deleted a Post with title={0}', $title));
+    
+    $this->Posts->delete($post);
+    
+    return $this->redirect('/');
+  }
+```
+ 
 
 ### Configuration
     
@@ -78,6 +104,7 @@ The behavior does offer a few configuration options:
 	<dd>An array of models that have a HABTM relationship with the acting model and whose changes should be monitored with the model. If the HABTM model is auditable in its own right, don't include it here. This option is for related models whose changes are _only_ tracked relative to the acting model.</dd>
 </dl>
 
+```php
     # Syntax with explicit options
     class TasksTable extends Table {
     
@@ -91,6 +118,7 @@ The behavior does offer a few configuration options:
       }
       
     }
+```
 
 ### Setting Audit Sources
 
@@ -127,14 +155,10 @@ Your table's will then have a ```currentUser()``` function attached that returns
     ]
 ```
 
-## Limitations
+## CONTRIBUTING
 
-* This project is for CakePHP 3.0 and is not backwards compatible with CakePHP <= 2.x. If you need compatibility with these version please use the original [CakePHP 2.x AuditLog plugin](https://github.com/robwilkerson/CakePHP-Audit-Log-Plugin)
+Feel free to submit bug reports or suggest improvements in a ticket or fork this project and improve upon it yourself. Contributions welcome.
 
 ## License
 
 This code is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
-
-## Notes
-
-Feel free to submit bug reports or suggest improvements in a ticket or fork this project and improve upon it yourself. Contributions welcome.

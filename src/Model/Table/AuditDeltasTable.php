@@ -2,6 +2,7 @@
 namespace AuditLog\Model\Table;
 
 use AuditLog\Model\Entity\AuditDelta;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -21,9 +22,9 @@ class AuditDeltasTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('audit_deltas');
-        $this->displayField('property_name');
-        $this->primaryKey('id');
+        $this->setTable('audit_deltas');
+        $this->setDisplayField('property_name');
+        $this->setPrimaryKey('id');
         $this->belongsTo('Audits', [
             'foreignKey' => 'audit_id',
             'joinType' => 'INNER',
@@ -32,7 +33,10 @@ class AuditDeltasTable extends Table
         $this->addBehavior('CounterCache', [
              'Audits' => ['delta_count']
         ]);
-        $this->setupSearchPlugin();
+        // Disable the search plugin by default
+        if (Configure::read('AuditLog.enableSearch')) {
+            $this->setupSearchPlugin();
+        }
     }
 
     public function setupSearchPlugin()

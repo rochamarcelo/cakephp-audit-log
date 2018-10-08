@@ -2,6 +2,7 @@
 namespace AuditLog\Model\Table;
 
 use AuditLog\Model\Entity\Audit;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -23,16 +24,19 @@ class AuditsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('audits');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('audits');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
 
         $this->hasMany('AuditDeltas', [
             'foreignKey' => 'audit_id',
             'className' => 'AuditLog.AuditDeltas'
         ]);
-        $this->setupSearchPlugin();
+        // Disable the search plugin by default
+        if (Configure::read('AuditLog.enableSearch')) {
+            $this->setupSearchPlugin();
+        }
     }
 
 

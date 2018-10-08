@@ -49,7 +49,7 @@ class AuditableBehavior extends Behavior
     {
         parent::initialize($config);
 
-        $habtm = $this->config('habtm');
+        $habtm = $this->getConfig('habtm');
 
         /*
          * Ensure that no HABTM models which are already auditable
@@ -69,7 +69,7 @@ class AuditableBehavior extends Behavior
                 unset($habtm[$index]);
             }
         }
-        $this->config('habtm', $habtm, false);
+        $this->setConfig('habtm', $habtm, false);
     }
 
     /**
@@ -128,8 +128,8 @@ class AuditableBehavior extends Behavior
         if (!$entity->isNew() && !$this->_shouldProcess('update')) {
             return;
         }
-        $alias = $this->_table->alias();
-        $config = $this->config();
+        $alias = $this->_table->getAlias();
+        $config = $this->getConfig();
 
         $audit = $this->_getModelData($entity);
 
@@ -187,7 +187,7 @@ class AuditableBehavior extends Behavior
         if ($entity->isNew() || count($updates)) {
             $audit = $Audits->newEntity($data);
             $audit = $Audits->save($audit);
-            $errors = $audit->errors();
+            $errors = $audit->getErrors();
             if ( !$audit || !empty($errors) || empty($audit->id) ) {
                 throw new \UnexpectedValueException(
                     'Error saving audit ', print_r($audit, true)
@@ -212,7 +212,7 @@ class AuditableBehavior extends Behavior
 
             $delta = $Audits->AuditDeltas->newEntity($delta);
             $delta = $Audits->AuditDeltas->save($delta);
-            $errors = $delta->errors();
+            $errors = $delta->getErrors();
             if ( !$delta || !empty($errors) || empty($delta->id) ) {
                 throw new \UnexpectedValueException(
                     'Error saving audit delta for ' . print_r($delta, true)
@@ -246,11 +246,11 @@ class AuditableBehavior extends Behavior
         if (!$this->_shouldProcess('delete')) {
             return;
         }
-        $config = $this->config();
+        $config = $this->getConfig();
 
         $source = $this->_getSource();
         $audit = $this->_original;
-        $alias = $this->_table->alias();
+        $alias = $this->_table->getAlias();
         $data  = [
             'event' => 'DELETE',
             'model' => $alias,
@@ -258,7 +258,7 @@ class AuditableBehavior extends Behavior
             'source_id' => $source['id'],
             'source_ip' => $source['ip'],
             'source_url' => $source['url'],
-            'description' => $source['description']
+            'description' => $this->_table->getDeleteEventDescription()
         ];
 
         if ($config['json_object']) {
@@ -278,7 +278,7 @@ class AuditableBehavior extends Behavior
      */
     protected function _shouldProcess($event)
     {
-        $on = $this->config('on');
+        $on = $this->getConfig('on');
         return in_array($event, $on);
     }
 
@@ -323,13 +323,13 @@ class AuditableBehavior extends Behavior
      */
     protected function _getModelData(Entity $entity)
     {
-        $habtm = $this->config('habtm');
-        $alias = $this->_table->alias();
-        $primaryKey = (array)$this->_table->primaryKey();
+        $habtm = $this->getConfig('habtm');
+        $alias = $this->_table->getAlias();
+        $primaryKey = (array)$this->_table->getPrimaryKey();
 
         if ( empty($primaryKey) ) {
             throw new \UnexpectedValueException(
-                'Invalid primary key for ' . $this->_table->alias()
+                'Invalid primary key for ' . $alias
             );
         }
 
@@ -344,12 +344,12 @@ class AuditableBehavior extends Behavior
             $query->contain(array_values($habtm));
         }
 
-        $data = $query->hydrate(false)->first();
+        $data = $query->enableHydration(false)->first();
 
         $audit_data = !empty($data) ? $data : [];
 
         foreach ($habtm as $habtmModel) {
-            $association = $this->_table->association($habtmModel);
+            $association = $this->_table->getAssociation($habtmModel);
             if ( !($association instanceof  \Cake\ORM\Association\BelongsToMany) ) {
                 continue;
             }
