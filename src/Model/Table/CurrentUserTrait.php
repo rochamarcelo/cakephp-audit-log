@@ -1,13 +1,13 @@
 <?php
 namespace AuditLog\Model\Table;
 
-use Cake\Network\Request;
+use Cake\Http\ServerRequestFactory;
 
 trait CurrentUserTrait 
 {
     public function currentUser()
     {
-        $request = Request::createFromGlobals();
+        $request = ServerRequestFactory::fromGlobals();
         $session = $request->getSession();
         $username = $session->read('Auth.User.username');
 
@@ -20,7 +20,7 @@ trait CurrentUserTrait
     }
 
     public function getDeleteEventDescription() {
-        $session = Request::createFromGlobals()->session();
+        $session = ServerRequestFactory::fromGlobals()->getSession();
         $description = $session->consume('Auditable.auditDescription');
         if (!$description) {
             return h(sprintf('Action by %s', $session->read('Auth.User.username')));

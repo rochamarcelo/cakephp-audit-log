@@ -54,11 +54,15 @@ class CurrentUserTraitTest extends TestCase
     {
         $expected = 'This item is no longer relevant';
 
-        $_SESSION['Auditable__auditDescription'] = 'This item is no longer relevant';
+        $_SESSION['Auth'] = [
+            'User' => [
+                'username' => 'jeff',
+            ],
+        ];
 
         $fakeModel = new ImplementsCurrentUser();
         $data = $fakeModel->currentUser();
 
-        $this->assertEquals($expected, $data['description']);
+        $this->assertEquals("Action by jeff", $data['description']);
     }
 }
